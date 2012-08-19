@@ -1,0 +1,21 @@
+<h1>Show VM</h1>
+
+<p class="well">
+  <%= link_to 'Edit', edit_vm_path(@vm), class: "btn" %>
+  <%= link_to 'Back', vms_path, class: "btn" %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @vm.name %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= status_badge @vm.status %>
+</p>
+
+<p>
+  <b>Details:</b>
+  <pre><%= @vm.details %></pre>
+</p>

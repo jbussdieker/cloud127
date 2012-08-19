@@ -1,5 +1,5 @@
 Cloud127::Application.routes.draw do
-  resources :instances do
+  resources :vms do
     member do
       get 'start'
       get 'stop'

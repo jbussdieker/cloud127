@@ -1,0 +1,26 @@
+<div class="well">
+<%= form_for(@vm) do |f| %>
+  <% @vm.errors.full_messages.each do |msg| %>
+    <div class="alert alert-error">
+      <a class="close" data-dismiss="alert">&#215;</a>
+      <%= content_tag :div, msg if msg.is_a?(String) %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <% if !@vm.persisted? %>
+  <div class="field">
+    <%= f.label :image %>
+    <%= select("vm", "template_uuid", Vm.all.collect {|p| [ p.name, p.uuid ] }) %>
+  </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+</div>

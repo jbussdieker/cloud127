@@ -13,12 +13,13 @@
 
 ActiveRecord::Schema.define(:version => 20120818232711) do
 
-  create_table "instances", :force => true do |t|
+  create_table "vms", :force => true do |t|
     t.string   "name"
     t.string   "status"
-    t.string   "guid"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "uuid"
+    t.string   "template_uuid"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
 end
