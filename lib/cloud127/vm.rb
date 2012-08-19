@@ -28,11 +28,6 @@ module Cloud127::Vm
     new_uuid
   end
 
-  def self.delete uuid
-    `vboxmanage unregistervm #{uuid} --delete`
-    $?.to_i == 0
-  end
-
   def self.modify uuid, params
     args = ""
     params.each_with_key {|k,v| args << " --#{k.to_s} \"#{v}\""}
@@ -41,18 +36,37 @@ module Cloud127::Vm
     $?.to_i == 0
   end
 
-  def self.start uuid
+
+  def delete
+    return true if !uuid
+    `vboxmanage unregistervm #{uuid} --delete`
+    $?.to_i == 0
+  end
+
+  def start
     `vboxmanage startvm #{uuid} --type headless`
     $?.to_i == 0
   end
 
-  def self.stop uuid
+  def stop
     `vboxmanage controlvm #{uuid} poweroff`
     $?.to_i == 0
   end
 
-  def self.info uuid
+  def details
     `vboxmanage showvminfo #{uuid} --machinereadable`
+  end
+  
+  def guest_property
+    `vboxmanage guestproperty enumerate #{uuid}`
+  end
+  
+  def []= key, value
+    `vboxmanage setextradata #{uuid} \"Cloud127/#{key}\" \"#{value}\"`
+  end
+
+  def [] key
+    `vboxmanage getextradata #{uuid} \"Cloud127/#{key}\"`.split(" ").last
   end
 
 private

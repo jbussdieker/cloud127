@@ -1,8 +1,10 @@
 require 'cloud127/vm'
 
 class Vm < ActiveRecord::Base
-  before_destroy :delete_vm
-  before_create :create_vm
+  include Cloud127::Vm
+
+  before_destroy :delete
+  after_create :create_vm
 
   belongs_to :image, :class_name => "Vm"
   attr_accessible :uuid, :name, :status, :template_uuid
@@ -20,18 +22,7 @@ class Vm < ActiveRecord::Base
       end
       vm
     }
-  end
-
-  def start
-    Cloud127::Vm.start uuid
-  end
-
-  def stop
-    Cloud127::Vm.stop uuid
-  end
-
-  def details
-    Cloud127::Vm.info uuid
+    super
   end
 
   def to_s
@@ -41,11 +32,9 @@ class Vm < ActiveRecord::Base
 private
   def create_vm
     if !self.uuid
-      self.uuid = Cloud127::Vm.clone(template_uuid, name)
+      self.status = "creating"
+      self.save
+      VmWorker.perform_async(self.id)
     end
-  end
-
-  def delete_vm
-    Cloud127::Vm.delete uuid if uuid
   end
 end
