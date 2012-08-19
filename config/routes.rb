@@ -1,4 +1,11 @@
 Cloud127::Application.routes.draw do
+  resources :instances do
+    member do
+      get 'start'
+      get 'stop'
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
