@@ -32,8 +32,8 @@ class Vm < ActiveRecord::Base
 private
   def create_vm
     if !self.uuid
-      self.status = "creating"
-      self.save
+      status = "creating"
+      save
       VmWorker.perform_async(self.id)
     end
   end
