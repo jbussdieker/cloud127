@@ -72,7 +72,7 @@ class VmsController < ApplicationController
 
     respond_to do |format|
       if @vm.save
-        format.html { redirect_to @vm, notice: 'Vm was successfully created.' }
+        format.html { redirect_to vms_path, notice: 'Vm was successfully created.' }
         format.json { render json: @vm, status: :created, location: @vm }
       else
         format.html { render action: "new" }
