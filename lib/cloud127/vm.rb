@@ -66,7 +66,9 @@ module Cloud127::Vm
   end
 
   def [] key
-    `vboxmanage getextradata #{uuid} \"Cloud127/#{key}\"`.split(" ").last
+    value = `vboxmanage getextradata #{uuid} \"Cloud127/#{key}\"`
+    return nil if value.strip == "No value set!"
+    value.split(" ").last
   end
 
 private
